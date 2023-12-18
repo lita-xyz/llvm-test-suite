@@ -1,10 +1,10 @@
 int main()
 {
-    int v1 = 11;
+    int v1 = -30;
     //needs to not be multiples of 2, otherwise SHL is invoked instead.
-    int v2 = -11;
+    int v2 = -5;
     int result = v1/v2; 
-    if (result == 0) {
+    if (result == 6) {
         while (1){}
     }
 
