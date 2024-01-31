@@ -1,7 +1,7 @@
 int main()
 {
-    int v1 = 3;
-    int v2 = 4;
+    int v1 = 4;
+    int v2 = 3;
     int result = v1>v2;
     if (result) {
         while (1){}
