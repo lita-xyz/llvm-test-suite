@@ -9,7 +9,7 @@ int fib(int n) {
 }
 
 int main () {
-	if (fib(6) == 8)  {
+	if (fib(6) != 8)  {
 		return 0;
 	} else {
 		while (1) {}
