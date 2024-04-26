@@ -1,7 +1,5 @@
 int main() {
-	char str1[] = "test";
-	char str2[] = "fall";
-	unsigned tmp = str2[1];
-	__builtin_delendum_write(tmp);
+	char str[4] = "1234";
+	__builtin_delendum_write(str[1]);
 	return 0;
 }
