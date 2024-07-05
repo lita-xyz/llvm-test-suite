@@ -60,28 +60,28 @@ echo "Executing x86 binary"
 
 x86_hash=$(./build/test_x86 | xxd -p)
 
-echo "Executing TinyRAM binaries at different opt levels"
+echo "Executing Valida binaries at different opt levels"
 
 valida run build/test_O3.out build/log_O3
 valida run build/test_O2.out build/log_O2
 valida run build/test_O1.out build/log_O1
 #valida run build/test_O0.out build/log_O0
 
-#tinyRAM_O0_hash=$(cat build/log_O0 | xxd -p)
-tinyRAM_O1_hash=$(cat build/log_O1 | xxd -p)
-tinyRAM_O2_hash=$(cat build/log_O2 | xxd -p)
-tinyRAM_O3_hash=$(cat build/log_O3 | xxd -p)
+#valida_O0_hash=$(cat build/log_O0 | xxd -p)
+valida_O1_hash=$(cat build/log_O1 | xxd -p)
+valida_O2_hash=$(cat build/log_O2 | xxd -p)
+valida_O3_hash=$(cat build/log_O3 | xxd -p)
 
-if [ "$x86_hash" == "$tinyRAM_O1_hash" ] && \
-   true \ #[ "$tinyRAM_O0_hash" == "$tinyRAM_O1_hash" ] && \
-   [ "$tinyRAM_O1_hash" == "$tinyRAM_O2_hash" ] && \
-   [ "$tinyRAM_O2_hash" ==  "$tinyRAM_O3_hash" ]
+if [ "$x86_hash" == "$valida_O1_hash" ] && \
+   true \ #[ "$valida_O0_hash" == "$valida_O1_hash" ] && \
+   [ "$valida_O1_hash" == "$valida_O2_hash" ] && \
+   [ "$valida_O2_hash" ==  "$valida_O3_hash" ]
   then
     echo "TEST PASSED with: $x86_hash"
     exit 0
   else
     echo "!! TEST FAILED !!"
-    echo "$x86_hash, $tinyRAM_O1_hash, $tinyRAM_O2_hash, $tinyRAM_O3_hash"
+    echo "$x86_hash, $valida_O1_hash, $valida_O2_hash, $valida_O3_hash"
     exit 1
   fi
 
