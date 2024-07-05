@@ -38,23 +38,16 @@ echo "Compiling for Delendum"
 
 echo "  Compiling testcases with different opt levels"
 
-clang $optsw -O3 -c $src -o build/test_O3.o
-clang $optsw -O2 -c $src -o build/test_O2.o
-clang $optsw -O1 -c $src -o build/test_O1.o
-#clang $optsw -O0 -c $src -o build/test_O0.o
+ld="--script=$LINKER_SCRIPT"
 
 # Compilation with -O0 is disabled because it produces code that requires `__umoddi3` and other
 
-ld="--script=$LINKER_SCRIPT"
-
-ld.lld $ld -o build/test_O3.out \
-	build/runtime.o build/test_O3.o
-ld.lld $ld -o build/test_O2.out \
-	build/runtime.o build/test_O2.o 
-ld.lld $ld -o build/test_O1.out \
-	build/runtime.o build/test_O1.o 
-#ld.lld $ld -o build/test_O0.out \
-#	build/runtime.o build/test_O0.o 
+for optlevel in {1..3}; do
+  clang $optsw -O$optlevel -c $src -o build/test_O$optlevel.o
+  ld.lld $ld \
+    -o build/test_O$optlevel.out \
+    build/runtime.o build/test_O$optlevel.o
+done
 
 echo "Executing x86 binary"
 
@@ -62,15 +55,10 @@ x86_hash=$(./build/test_x86 | xxd -p)
 
 echo "Executing Valida binaries at different opt levels"
 
-valida run build/test_O3.out build/log_O3
-valida run build/test_O2.out build/log_O2
-valida run build/test_O1.out build/log_O1
-#valida run build/test_O0.out build/log_O0
-
-#valida_O0_hash=$(cat build/log_O0 | xxd -p)
-valida_O1_hash=$(cat build/log_O1 | xxd -p)
-valida_O2_hash=$(cat build/log_O2 | xxd -p)
-valida_O3_hash=$(cat build/log_O3 | xxd -p)
+for optlevel in {1..3}; do
+  valida run build/test_O$optlevel.out build/log_O$optlevel
+  declare valida_O$optlevel\_hash=$(cat build/log_O$optlevel | xxd -p)
+done
 
 if [ "$x86_hash" == "$valida_O1_hash" ] && \
    true \ #[ "$valida_O0_hash" == "$valida_O1_hash" ] && \
