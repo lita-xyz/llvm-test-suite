@@ -2,7 +2,10 @@
 # set -x   # uncomment to see commands that are run printed
 rm -rf ./buildValidaTests # reset the directory to make sure test results are current
 mkdir ./buildValidaTests
+
 ./llvm-valida/build/bin/clang -c -target delendum ./llvm-valida/DelendumEntryPoint.c -o ./llvm-valida/build/DelendumEntryPoint.o
+
+PATH=$(realpath ./llvm-valida/build/bin/):$(realpath ./valida/target/release/):$PATH LINKER_SCRIPT=$(realpath ./llvm-valida/valida.ld) sh -c "cd ./llvm-test-suite/csmith_testing && ./suite.sh"
 
 # TODO fix these tests: 2023-11-alloca getchar putc rand errno
 
@@ -11,7 +14,7 @@ for test in ${@:-${TERMTESTS[@]}}
 do
     echo $test
     ./llvm-valida/build/bin/clang -c -target delendum ./llvm-test-suite/SingleSource/UnitTests/$test.c -o ./buildValidaTests/$test.o
-    ./llvm-valida/build/bin/ld.lld --script=./llvm-valida/valida.ld -o ./buildValidaTests/$test.out ./buildValidaTests/$test.o
+    ./llvm-valida/build/bin/ld.lld --script=./llvm-valida/valida.ld -o ./buildValidaTests/$test.out ./llvm-valida/build/DelendumEntryPoint.o ./buildValidaTests/$test.o
     ./valida/target/release/valida run ./buildValidaTests/$test.out ./buildValidaTests/$test.log
     ./valida/target/release/valida prove ./buildValidaTests/$test.out ./buildValidaTests/$test.proof
     ./valida/target/release/valida verify ./buildValidaTests/$test.out ./buildValidaTests/$test.proof
