@@ -5,7 +5,6 @@
 #   - file ./build/runtime.o is present
 #   - `LINKER_SCRIPT` env var is set to absolute path to linker script
 #   - PATH contains path to a directory to bin directory of llvm-valida build
-#   - gcc-multilib is installed
 #
 # The script builds csmith testcases for x86 and for delendum arch.
 # The latter is built with 3 different optimization levels.
@@ -29,7 +28,7 @@ echo "File under test: $src"
 
 echo "Compiling fox x86"
 
-clang -Wno-everything -std=c11 -m32 -O3 -g -nostdinc -I. -Icsmith -Icsmith/X86 $src -o build/test_x86
+clang -Wno-everything -std=c11 -O3 -g -nostdinc -I. -Icsmith -Icsmith/X86 $src -o build/test_x86
 
 opts="-std=c11 -target delendum -I. -Icsmith -Icsmith/Delendum"
 optsw="$opts -Wno-everything"
