@@ -5,5 +5,6 @@
 set -e
 #set -x
 
+$PWD/llvm-valida/build/bin/clang -c -target delendum $PWD/llvm-valida/DelendumEntryPoint.c -o $PWD/llvm-valida/build/DelendumEntryPoint.o
 $PWD/llvm-valida/build/bin/clang -c -target delendum $1 -o $2
-$PWD/llvm-valida/build/bin/ld.lld --script=$PWD/llvm-valida/valida.ld -o $2.out $2
+$PWD/llvm-valida/build/bin/ld.lld --script=$PWD/llvm-valida/valida.ld -o $2.out $PWD/llvm-valida/build/DelendumEntryPoint.o $2

@@ -25,7 +25,7 @@ for test in ${@:-${TESTS[@]}}
 do
 	echo $test
 	./llvm-valida/build/bin/clang -c -target delendum ./llvm-test-suite/SingleSource/UnitTests/$test.c -o ./buildValidaTests/$test.o
-	./llvm-valida/build/bin/ld.lld --script=./llvm-valida/valida.ld -o ./buildValidaTests/$test.out ./buildValidaTests/$test.o
+	./llvm-valida/build/bin/ld.lld --script=./llvm-valida/valida.ld -o ./buildValidaTests/$test.out ./llvm-valida/build/DelendumEntryPoint.o ./buildValidaTests/$test.o
 	timeout 3 ./valida/target/release/valida run ./buildValidaTests/$test.out ./buildValidaTests/$test.log
 	echo $? # status 124 indicates non-termination; status 0 indicates successful termination
 done
